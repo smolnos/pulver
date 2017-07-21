@@ -63,7 +63,7 @@ test_that("we can choose column names for the results table", {
 
 test_that("we can use multiple cores in parallel", {
     mat <- create_xyz_matrices()
-    actual <- pulverize(mat$y, mat$x, mat$z, cores = 2)
+    actual <- pulverize(mat$y, mat$x, mat$z, cores = 4)
     expected <- pulverize_lm(mat$y, mat$x, mat$z)
     expect_same_contents(actual, expected)
 })

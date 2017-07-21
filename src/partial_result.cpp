@@ -1,5 +1,5 @@
 #include "partial_result.h"
-#ifdef SUPPORT_OPENMP
+#ifdef _OPENMP
 #include <omp.h>
 // [[Rcpp::plugins(openmp)]]
 #endif
@@ -36,11 +36,11 @@ void PartialResult::write(std::FILE *fp) {
 void PartialResult::run_regressions(NumericMatrix ymat, NumericMatrix xmat, NumericMatrix zmat, int zcolumn) {
     std::vector<double>& rvalues = storage_->rvalues_;
     int n = ymat.nrow();
-#ifdef SUPPORT_OPENMP
+#ifdef _OPENMP
 #pragma omp parallel for num_threads(cores_)
 #endif
     for (int j = 0; j < xmat.ncol(); ++j) {
-#ifdef SUPPORT_OPENMP
+#ifdef _OPENMP
         int thread = omp_get_thread_num();
 #else
         int thread = 0;
