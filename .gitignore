@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+pulver.Rproj
+.Rbuildignore
+tests/testthat/data/
+tests/testthat/benchmark/*.txt
+tests/testthat/benchmark/*.log
+tests/testthat/benchmark/*.out
