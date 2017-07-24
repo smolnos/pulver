@@ -9,10 +9,10 @@ pulverize_all(ys, xs, zs, output_file = NULL, colnames = c("y", "x", "z"),
   suppress_return = TRUE)
 }
 \arguments{
-\item{ys, xs, zs}{list of input file names (text or \code{databel} object file)
+\item{ys, xs, zs}{lists of input file names (text or \code{databel} object file)
 containing tab-separated tables or matrices of type "double"}
 
-\item{output_file}{Output file (default: \code{NULL})}
+\item{output_file}{Output file name (default: \code{NULL})}
 
 \item{colnames}{Column names of output file (default: "y", "x", and "z")}
 
@@ -26,19 +26,19 @@ containing tab-separated tables or matrices of type "double"}
 frame with p-values for the interaction term (default: \code{TRUE})}
 }
 \description{
-Computes the p-values for the interaction term for all combinations of input files.
+Call \code{\link{pulverize}} for all combinations of input files.
 }
 \details{
-\code{pulverize_all} iterates through list of file names or list
-    of matrices and calls \code{pulverize} for each combination. Files contain
-    matrices with same number of rows (= number of observations) and must have
+\code{pulverize_all} iterates through lists of file names or list
+    of matrices and calls \code{pulverize} for each combination. Files must contain
+    matrices with the same number of rows (= number of observations) and must have
     column names.
 
     By default all results are written to \code{output_file} without
     returning a data frame (\code{suppress_return} = \code{TRUE}). Column names
-    of the output file are default set to "y", "x", and "z", but can be changed
-    using the \code{colnames} argument. Furthermore, \code{output_file} cannot
-    be overwritten. For enabling overwrite an existing \code{output_file}, set
+    of the output file are by default set to "y", "x", and "z", but can be changed
+    using the \code{colnames} argument. Furthermore, by default, \code{output_file} cannot
+    be overwritten. For enabling overwrite of an existing \code{output_file}, set
     \code{overwrite} to \code{TRUE}.
 }
 \examples{

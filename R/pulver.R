@@ -9,17 +9,18 @@
 #' \code{ymat}, \code{xmat}, and \code{zmat} have 200, 300, and 400
 #' columns, then \code{pulverize} evaluates 24 million models
 #' (\eqn{200\times 300\times 400}{200 * 300 * 400}) and returns the
-#' p-value for the interaction term.
+#' p-value for the interaction term for each model.
 #'
 #' For reasons of computational efficiency, \code{pulverize} returns
 #' only p-values and only for the interaction term \eqn{xz}.
-#' Further improvements of the run time is achieved by using the
-#' correlation coefficient to test the null-hypothesis, which avoids
-#' the costly computation of inversions. Additional tricks are a
-#' rearrangement of the order, when iterating through the different matrices,
-#' and implementing the core algorithm in the fast programming language C++.
+#' Fast run time is achieved by using the correlation coefficient between
+#' the outcome variable eqn{y} and the interaction term eqn{xz} to test
+#' the null-hypothesis, which avoids the costly computation of inversions.
+#' Additional employed time-saving operations are a rearrangement of the order when iterating through
+#' the different matrices, and implementing the core algorithm in the fast
+#' programming language C++.
 #'
-#' Once interesting models are identified based on those p-values, the number of
+#' Once interesting models are identified based on the resulting p-values, the number of
 #' models will be greatly reduced.  At this point additional model
 #' characteristics, e.g. effect estimates and standard errors, can be
 #' obtained via traditional methods such as R's
@@ -43,18 +44,18 @@
 #'     to the same output file (dafault: \code{NULL})
 #'
 #' @details Matrices \code{ymat}, \code{xmat}, and \code{zmat} must
-#'     have column names. Missing values are imputed based on their
+#'     have column names. Missing values are imputed using their
 #'     column means. If \code{pvalue_threshold} is supplied, only
 #'     p-values (p < \code{pvalue_threshold})strictly below the
 #'     threshold are included in the returned data frame and saved
 #'     in \code{output_file}.
 #'
 #'     In cases where the resulting data frame would be too large to fit
-#'     the memory, it is possible to write the results to
+#'     in memory, it is possible to write the results to
 #'     \code{output_file} without returning a data frame by setting
 #'     \code{suppress_return} to \code{TRUE}.
 #'
-#'     The column names of the result table are default set to "y", "x", and
+#'     The column names of the results table are by default set to "y", "x", and
 #'     "z", but can be changed using the \code{names} argument.
 #'
 #'     An error will be signaled if \code{output_file} already exists.
@@ -68,7 +69,7 @@
 #'
 #' @return If \code{suppress_return} is \code{FALSE}, a data frame with
 #'     columns "y", "x", "z", and "pvalue" containing the p-values for
-#'     the interaction term \eqn{xz} of the above linear model.
+#'     the interaction term \eqn{xz} of the above linear model is returned.
 #'     Otherwise \code{NULL} is returned.
 #'
 #' @references Shabalin, Andrey A (2012) Bioinformatics: Matrix eQTL:
@@ -137,11 +138,11 @@ pulverize <- function(ymat, xmat, zmat, output_file = NULL,
 
 #' pulverize_all
 #'
-#' Computes the p-values for the interaction term for all combinations of input files.
+#' Call \code{\link{pulverize}} for all combinations of input files.
 #'
-#' @param ys,xs,zs list of input file names (text or \code{databel} object file)
+#' @param ys,xs,zs lists of input file names (text or \code{databel} object file)
 #'     containing tab-separated tables or matrices of type "double"
-#' @param output_file Output file (default: \code{NULL})
+#' @param output_file Output file name (default: \code{NULL})
 #' @param colnames Column names of output file (default: "y", "x", and "z")
 #' @param pvalue_threshold p-value threshold (default: NULL, see \code{\link{pulverize}})
 #' @param cores Number of cores (default: 1, see \code{\link{pulverize}})
@@ -149,16 +150,16 @@ pulverize <- function(ymat, xmat, zmat, output_file = NULL,
 #' @param suppress_return If TRUE return NULL instead of a data
 #'     frame with p-values for the interaction term (default: \code{TRUE})
 #'
-#' @details \code{pulverize_all} iterates through list of file names or list
-#'     of matrices and calls \code{pulverize} for each combination. Files contain
-#'     matrices with same number of rows (= number of observations) and must have
+#' @details \code{pulverize_all} iterates through lists of file names or list
+#'     of matrices and calls \code{pulverize} for each combination. Files must contain
+#'     matrices with the same number of rows (= number of observations) and must have
 #'     column names.
 #'
 #'     By default all results are written to \code{output_file} without
 #'     returning a data frame (\code{suppress_return} = \code{TRUE}). Column names
-#'     of the output file are default set to "y", "x", and "z", but can be changed
-#'     using the \code{colnames} argument. Furthermore, \code{output_file} cannot
-#'     be overwritten. For enabling overwrite an existing \code{output_file}, set
+#'     of the output file are by default set to "y", "x", and "z", but can be changed
+#'     using the \code{colnames} argument. Furthermore, by default, \code{output_file} cannot
+#'     be overwritten. For enabling overwrite of an existing \code{output_file}, set
 #'     \code{overwrite} to \code{TRUE}.
 #'
 #' @seealso \code{\link{pulverize}}
@@ -265,7 +266,7 @@ read_data <- function(file) {
 #'
 #' @return matrix of type "double"
 #'
-#' @references \url{http://www.genabel.org/packages/DatABEL}
+#' @references \url{www.genabel.org/packages/DatABEL}
 #'
 #' @export
 read_databel <- function(file) {
@@ -280,7 +281,7 @@ read_databel <- function(file) {
 #' @param data matrix of type "double"
 #' @param file file name of a \code{databel} object (extension: ".fvi") or text file
 #'
-#' @references \url{http://www.genabel.org/packages/DatABEL}
+#' @references \url{www.genabel.org/packages/DatABEL}
 #'
 #' @export
 write_databel <- function(data, file) {

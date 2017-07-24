@@ -7,7 +7,7 @@
 read_databel(file)
 }
 \arguments{
-\item{file}{file name of a \code{databel} object (ending: ".fvi") or text file}
+\item{file}{file name of a \code{databel} object (extension: ".fvi") or text file}
 }
 \value{
 matrix of type "double"
@@ -16,5 +16,5 @@ matrix of type "double"
 Reads a \code{databel} object file in table format and returns a matrix of type "double"
 }
 \references{
-\url{http://www.genabel.org/packages/DatABEL}
+\url{www.genabel.org/packages/DatABEL}
 }
