@@ -78,7 +78,7 @@ DataFrame combine_results(List results) {
     NumericVector pvalues(nrow);
     int row = 0;//sdf
     for (int i = 0; i < results.size(); ++i) {
-        DataFrame d = results[i];
+        DataFrame d = static_cast<DataFrame> (results[i]);
         CharacterVector y_ = d[0];
         CharacterVector x_ = d[1];
         CharacterVector z_ = d[2];
@@ -91,7 +91,7 @@ DataFrame combine_results(List results) {
             ++row;
         }
     }
-    DataFrame d = results[0];
+    DataFrame d = static_cast<DataFrame> (results[0]);
     CharacterVector names = d.attr("names");
     return DataFrame::create(
         Named(CHAR(names[0])) = y,
@@ -103,7 +103,7 @@ DataFrame combine_results(List results) {
 static int count_rows(List results) {
     int n = 0;
     for (int i = 0; i < results.size(); ++i) {
-        DataFrame d = results[i];
+        DataFrame d = static_cast<DataFrame> (results[i]);
         CharacterVector y = d[0];
         n += y.size();
     }
