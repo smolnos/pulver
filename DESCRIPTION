@@ -15,5 +15,9 @@ Imports:
     parallel,
     methods
 Suggests:
-    testthat
+    testthat,
+    knitr,
+    rmarkdown,
+    devtools
 RoxygenNote: 6.0.1
+VignetteBuilder: knitr

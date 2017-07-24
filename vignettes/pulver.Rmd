@@ -1,0 +1,127 @@
+---
+title: "Introduction to pulver"
+author: "Sophie Molnos"
+date: "`r Sys.Date()`"
+bibliography: bibliography.bib
+output:
+  knitr:::html_vignette:
+    toc: true
+    css: custom.css
+vignette: >
+  %\VignetteEngine{knitr::knitr}
+  %\VignetteIndexEntry{Introduction to pulver}
+  %\usepackage[UTF-8]{inputenc}
+---
+***Installation***
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+**Release version (CRAN):**
+```{r CRAN}
+# install.packages("pulver")
+```
+
+**Development version (Github)**
+```{r Github, results = "hide"}
+library(devtools)
+install_github("smolnos/pulver")
+```
+
+**Function ```pulverize```**
+
+```pulverize``` receives three arguments: the output matrix Y, and two input matrices X and Z. Then, ```pulverize``` itereates through each column y of matrix Y, each column x of matrix X, and each column Z of matrix Z in order to evaluate the linear regression:
+\begin{equation}
+    y = \beta_0 + \beta_1 x + \beta_2 z + \beta_3 x z.
+\end{equation}
+Finally, the function returns for each linear regression the p-value for the null hypothesis $\beta_3 = 0$.
+In genral, the output matrix Y can be any quantitative matrix such as concentration of metabolite levels, or protein levels, etc.. The same holds true for the input matrices X and Y: Both have to be quantitative. For all matrices the number of rows are the number of observations and the number of columns the number of variables, i.e., all matrices must have the same number of rows.
+For reasons of efficiently, ```pulver``` does not adjust for additional covariates, instead the residuals from the phenotype adjusted for other parameters should be used.
+
+**Running function ```pulverize```**
+
+First, we generate three matrices Y, X, and Z, which are the input matrices for the function ```pulverize```:
+
+```{r create_matrices}
+set.seed(369)
+nobs <- 100
+Y <- matrix(rnorm(nobs * 2), ncol = 2, dimnames = list(paste0("row", 1:nobs),
+paste0("column", 1:2)))
+X <- matrix(rnorm(nobs * 3), ncol = 3, dimnames = list(paste0("row", 1:nobs),
+paste0("column", 1:3)))
+Z <- matrix(rnorm(nobs * 4), ncol = 4, dimnames = list(paste0("row", 1:nobs),
+paste0("column", 1:4)))
+```
+
+Finally, we call the function ```pulverize```.
+
+```{r pulver}
+library(pulver)
+pulverize(Y, X, Z)
+```
+Eventually, we want only to keep significant associations, i.e., associations having a p-value less than 0.05. ```pulverize``` evaluates 24 tests ($2 \times 3 \times 4$), because matrices Y, X, and Z have 2,3, and 4 columns. To adjust for multiple testing, we are using the Bonferroni correction for 24 tests. Thus, only p-values with a p-value less then $\frac{0.05}{2\times3\times4} = \frac{0.05}{24} \approx 0.002$ are significant and should be returned in the table.
+
+```{r bonf}
+pulverize(Y, X, Z, pvalue_threshold = 0.05/24)
+```
+
+For huge matrices improved run time is achieved by using multiple cores. Note, parallelization is only possible for environments with C/C++ compilers that support OpenMP.
+```{r cores}
+nobs <- 1000
+Y <- matrix(rnorm(nobs * 20), ncol = 20, dimnames = list(paste0("row", 1:nobs),
+paste0("column", 1:20)))
+X <- matrix(rnorm(nobs * 300), ncol = 300, dimnames = list(paste0("row", 1:nobs),
+paste0("column", 1:300)))
+Z <- matrix(rnorm(nobs * 40), ncol = 40, dimnames = list(paste0("row", 1:nobs),
+paste0("column", 1:40)))
+system.time(pulverize(Y, X, Z))
+system.time(pulverize(Y, X, Z, cores = 2))
+```
+
+**Running function ```pulverize_all```**
+
+If the matrices Y, X, and Z are too big to load them all at the same time, it might be beneficial to split the matrices into smaller matrices. Function ```pulverize_all``` receives as input three lists containing file names or matrices.
+Files can be saved as text files or ```DatABEL``` object files [@aulchenko2015package], which are binary files and therefore needed less space and are faster to read.
+The files contain submatrices of the matrices Y, X, and Z. Subsequently, ```pulverize_all``` iterates through each list and calls ```pulverize``` for each combination of these submatrices.
+
+Thus, first we create lists containing file names of larger matrices Y and X, and one list containing the matrix Z.
+```{r create_lists}
+nobs <- 100
+Y <- matrix(rnorm(nobs * 20), ncol = 20, dimnames = list(NULL,
+paste0("column", 1:20)))
+Y1 <- Y[,1:10]
+Y2 <- Y[,11:20]
+write.table(Y1, file = "Y1.txt", sep = "\t")
+write.table(Y2, file = "Y2.txt", sep = "\t")
+Ylist <- as.list(c("Y1.txt", "Y2.txt"))
+```
+For saving the matrix X as a ```DatABEL``` object file, we call the function ```write_databel```:
+```{r databel, results = "hide"}
+X <- matrix(rnorm(nobs * 30), ncol = 30, dimnames = list(paste0("row", 1:nobs),
+paste0("column", 1:30)))
+X1 <- X[,1:15]
+X2 <- X[,16:30]
+write_databel(X1, "X1")
+write_databel(X2, "X2")
+```
+```write_databel``` creates the ```DatABEL``` object files which comprised to files fvi- and fvd-files. For the call of ```pulverize_all``` it is sufficient to write in the list the fvi-file to indicate that this file is a ```DatABEL``` object file:
+```{r Xlist}
+Xlist <- as.list(c("X1.fvi", "X2.fvi"))
+```
+If the matrix is not that big, there is no need to save the matrix as text file or ```DatABEL``` object file, we can simply add the matrix into a list, as demonstrated for the matrix Z which is added into Zlist:
+
+```{r Zlist}
+Z <- matrix(rnorm(nobs * 4), ncol = 4, dimnames = list(paste0("row", 1:nobs),
+paste0("column", 1:4)))
+Zlist <- list(NULL)
+Zlist[[1]] <- Z
+```
+
+Subsequently, we call ```pulverize_all```:
+```{r pulverize_all}
+pulverize_all(Ylist, Xlist, Zlist, output_file = "output_file.txt")
+head(read.delim("output_file.txt"))
+```
+Finally, all files are removed:
+```{r remove, results = "hide"}
+file.remove("Y1.txt", "Y2.txt", "X1.fvi" ,"X1.fvd", "X2.fvi", "X2.fvd", "output_file.txt")
+```

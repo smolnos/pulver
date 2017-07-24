@@ -7,3 +7,4 @@ tests/testthat/data/
 tests/testthat/benchmark/*.txt
 tests/testthat/benchmark/*.log
 tests/testthat/benchmark/*.out
+
