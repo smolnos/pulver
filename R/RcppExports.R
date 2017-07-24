@@ -2,34 +2,34 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 compute_and_save_results <- function(ymat, xmat_, zmat_, rvalue_threshold, names, cores, suppress_return, swap_x_and_z, xpstorage, xp) {
-    .Call('_pulver_compute_and_save_results', PACKAGE = 'pulver', ymat, xmat_, zmat_, rvalue_threshold, names, cores, suppress_return, swap_x_and_z, xpstorage, xp)
+    .Call(`_pulver_compute_and_save_results`, ymat, xmat_, zmat_, rvalue_threshold, names, cores, suppress_return, swap_x_and_z, xpstorage, xp)
 }
 
 write_header <- function(xp, names) {
-    invisible(.Call('_pulver_write_header', PACKAGE = 'pulver', xp, names))
+    invisible(.Call(`_pulver_write_header`, xp, names))
 }
 
 open_output_file <- function(filename) {
-    .Call('_pulver_open_output_file', PACKAGE = 'pulver', filename)
+    .Call(`_pulver_open_output_file`, filename)
 }
 
 close_output_file <- function(xp) {
-    invisible(.Call('_pulver_close_output_file', PACKAGE = 'pulver', xp))
+    invisible(.Call(`_pulver_close_output_file`, xp))
 }
 
 create_fake_pointer <- function() {
-    .Call('_pulver_create_fake_pointer', PACKAGE = 'pulver')
+    .Call(`_pulver_create_fake_pointer`)
 }
 
 combine_results <- function(results) {
-    .Call('_pulver_combine_results', PACKAGE = 'pulver', results)
+    .Call(`_pulver_combine_results`, results)
 }
 
 create_storage <- function(size, nrow, cores) {
-    .Call('_pulver_create_storage', PACKAGE = 'pulver', size, nrow, cores)
+    .Call(`_pulver_create_storage`, size, nrow, cores)
 }
 
 delete_storage <- function(xp) {
-    invisible(.Call('_pulver_delete_storage', PACKAGE = 'pulver', xp))
+    invisible(.Call(`_pulver_delete_storage`, xp))
 }
 

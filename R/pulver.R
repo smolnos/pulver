@@ -216,25 +216,22 @@ pulverize_all <- function(ys, xs, zs, output_file = NULL, colnames = c("y", "x",
 }
 
 setClass("FilePointer", slots = list(pointer = "externalptr"))
-
 setMethod("initialize", "FilePointer", function(.Object, filename) {
     if (is.null(filename))
-        .Object@pointer <- .Call("_pulver_create_fake_pointer", PACKAGE = "pulver")
+        .Object@pointer <- .Call("_pulver_create_fake_pointer")
     else
-        .Object@pointer <- .Call("_pulver_open_output_file", filename, PACKAGE = "pulver")
+        .Object@pointer <- .Call("_pulver_open_output_file", filename)
     .Object
 })
 
 setGeneric("close_output_file", function(fp) stop("not implemented"))
-
 setMethod("close_output_file", "FilePointer", function(fp) {
-    .Call("_pulver_close_output_file", fp@pointer, PACKAGE = "pulver")
+    .Call("_pulver_close_output_file", fp@pointer)
 })
 
 setGeneric("write_header", function(fp, names) stop("not implemented"))
-
 setMethod("write_header", "FilePointer", function(fp, names) {
-    .Call("_pulver_write_header", fp@pointer, names, PACKAGE = "pulver")
+    .Call("_pulver_write_header", fp@pointer, names)
 })
 
 p2t <- function(p, df) {

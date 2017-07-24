@@ -1,4 +1,4 @@
-#' @useDynLib pulver
+#' @useDynLib pulver, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 NULL
 
