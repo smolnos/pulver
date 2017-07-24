@@ -217,23 +217,23 @@ hr {
 install_github(&quot;smolnos/pulver&quot;)
 </code></pre>
 
-<pre><code>## Skipping install of &#39;pulver&#39; from a github remote, the SHA1 (d3246069) has not changed since last install.
+<pre><code>## Skipping install of &#39;pulver&#39; from a github remote, the SHA1 (7c1914f6) has not changed since last install.
 ##   Use `force = TRUE` to force installation
 </code></pre>
 
 <p><strong>Function <code>pulverize</code></strong></p>
 
-<p><code>pulverize</code> receives three arguments: the output matrix Y, and two input matrices X and Z. Then, <code>pulverize</code> itereates through each column y of matrix Y, each column x of matrix X, and each column Z of matrix Z in order to evaluate the linear regression:
+<p><code>pulverize</code> receives three arguments: the output matrix Y, and two input matrices X and Z. Then, <code>pulverize</code> iterates through each column y of matrix Y, each column x of matrix X, and each column z of matrix Z in order to evaluate the linear regression:
 \begin{equation}
     y = \beta_0 + \beta_1 x + \beta_2 z + \beta_3 x z.
 \end{equation}
 Finally, the function returns for each linear regression the p-value for the null hypothesis \(\beta_3 = 0\).
-In genral, the output matrix Y can be any quantitative matrix such as concentration of metabolite levels, or protein levels, etc.. The same holds true for the input matrices X and Y: Both have to be quantitative. For all matrices the number of rows are the number of observations and the number of columns the number of variables, i.e., all matrices must have the same number of rows.
-For reasons of efficiently, <code>pulver</code> does not adjust for additional covariates, instead the residuals from the phenotype adjusted for other parameters should be used.</p>
+In genral, the output matrix Y can be any quantitative matrix such as concentrations of metabolites, or protein levels, etc.. The same holds true for the input matrices X and Y: Both have to be quantitative. For all matrices the number of rows are the number of observations and the number of columns the number of variables, i.e., all matrices must have the same number of rows.
+For reasons of efficiently, <code>pulver</code> does not adjust for additional covariates, instead the residuals from the phenotype adjusted for these parameters should be used.</p>
 
 <p><strong>Running function <code>pulverize</code></strong></p>
 
-<p>First, we generate three matrices Y, X, and Z, which are the input matrices for the function <code>pulverize</code>:</p>
+<p>Next, we generate three matrices Y, X, and Z, which are the input matrices for the function <code>pulverize</code>:</p>
 
 <pre><code class="r">set.seed(369)
 nobs &lt;- 100
@@ -278,7 +278,7 @@ pulverize(Y, X, Z)
 ## 24 column2 column3 column4 0.55627624
 </code></pre>
 
-<p>Eventually, we want only to keep significant associations, i.e., associations having a p-value less than 0.05. <code>pulverize</code> evaluates 24 tests (\(2 \times 3 \times 4\)), because matrices Y, X, and Z have 2,3, and 4 columns. To adjust for multiple testing, we are using the Bonferroni correction for 24 tests. Thus, only p-values with a p-value less then \(\frac{0.05}{2\times3\times4} = \frac{0.05}{24} \approx 0.002\) are significant and should be returned in the table.</p>
+<p>Normally, we want to only keep the significant associations, i.e., associations having a p-value less than 0.05. <code>pulverize</code> evaluates 24 tests (\(2 \times 3 \times 4\)), because matrices Y, X, and Z have 2,3, and 4 columns. To adjust for multiple testing, we use the Bonferroni correction for 24 tests. Thus, only p-values with a p-value less then \(\frac{0.05}{2\times3\times4} = \frac{0.05}{24} \approx 0.002\) are significant and should be returned in the table.</p>
 
 <pre><code class="r">pulverize(Y, X, Z, pvalue_threshold = 0.05/24)
 </code></pre>
@@ -300,21 +300,21 @@ system.time(pulverize(Y, X, Z))
 </code></pre>
 
 <pre><code>##    user  system elapsed 
-##   2.011   0.033   2.044
+##   2.067   0.065   2.131
 </code></pre>
 
 <pre><code class="r">system.time(pulverize(Y, X, Z, cores = 2))
 </code></pre>
 
 <pre><code>##    user  system elapsed 
-##   2.112   0.035   1.214
+##   2.158   0.042   1.272
 </code></pre>
 
 <p><strong>Running function <code>pulverize_all</code></strong></p>
 
-<p>If the matrices Y, X, and Z are too big to load them all at the same time, it might be beneficial to split the matrices into smaller matrices. Function <code>pulverize_all</code> receives as input three lists containing file names or matrices.
-Files can be saved as text files or <code>DatABEL</code> object files [@aulchenko2015package], which are binary files and therefore needed less space and are faster to read.
-The files contain submatrices of the matrices Y, X, and Z. Subsequently, <code>pulverize_all</code> iterates through each list and calls <code>pulverize</code> for each combination of these submatrices.</p>
+<p>If the matrices Y, X, and Z are too big to load all at the same time, it might be beneficial to split the matrices into smaller matrices. Function <code>pulverize_all</code> receives as input three lists containing file names or matrices.
+Files can be saved as text files or <code>DatABEL</code> object files [@aulchenko2015package], which are binary files and therefore need less space and are faster to read.
+The files contain submatrices of the matrices Y, X, and Z. <code>pulverize_all</code> iterates through each list and calls <code>pulverize</code> for each combination of these submatrices.</p>
 
 <p>Thus, first we create lists containing file names of larger matrices Y and X, and one list containing the matrix Z.</p>
 
@@ -338,12 +338,12 @@ write_databel(X1, &quot;X1&quot;)
 write_databel(X2, &quot;X2&quot;)
 </code></pre>
 
-<p><code>write_databel</code> creates the <code>DatABEL</code> object files which comprised to files fvi- and fvd-files. For the call of <code>pulverize_all</code> it is sufficient to write in the list the fvi-file to indicate that this file is a <code>DatABEL</code> object file:</p>
+<p><code>write_databel</code> creates the <code>DatABEL</code> object files which consist fvi- and fvd-files. For the call of <code>pulverize_all</code> it is sufficient to write in the list the fvi-file to indicate that this file is a <code>DatABEL</code> object file:</p>
 
 <pre><code class="r">Xlist &lt;- as.list(c(&quot;X1.fvi&quot;, &quot;X2.fvi&quot;))
 </code></pre>
 
-<p>If the matrix is not that big, there is no need to save the matrix as text file or <code>DatABEL</code> object file, we can simply add the matrix into a list, as demonstrated for the matrix Z which is added into Zlist:</p>
+<p>If the matrix is not that big, there is no need to save the matrix as a text file or <code>DatABEL</code> object file, we can simply add the matrix into a list, as demonstrated for the matrix Z which is added in Zlist:</p>
 
 <pre><code class="r">Z &lt;- matrix(rnorm(nobs * 4), ncol = 4, dimnames = list(paste0(&quot;row&quot;, 1:nobs),
 paste0(&quot;column&quot;, 1:4)))
@@ -351,7 +351,7 @@ Zlist &lt;- list(NULL)
 Zlist[[1]] &lt;- Z
 </code></pre>
 
-<p>Subsequently, we call <code>pulverize_all</code>:</p>
+<p>We then call <code>pulverize_all</code>:</p>
 
 <pre><code class="r">pulverize_all(Ylist, Xlist, Zlist, output_file = &quot;output_file.txt&quot;)
 </code></pre>
