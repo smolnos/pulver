@@ -1,9 +1,6 @@
 ## ----setup, include=FALSE------------------------------------------------
 knitr::opts_chunk$set(echo = TRUE)
 
-## ----CRAN----------------------------------------------------------------
-# install.packages("pulver")
-
 ## ----Github, results = "hide"--------------------------------------------
 library(devtools)
 install_github("smolnos/pulver")

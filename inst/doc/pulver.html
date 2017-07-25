@@ -206,18 +206,13 @@ hr {
 <body>
 <p><strong><em>Installation</em></strong></p>
 
-<p><strong>Release version (CRAN):</strong></p>
-
-<pre><code class="r"># install.packages(&quot;pulver&quot;)
-</code></pre>
-
 <p><strong>Development version (Github)</strong></p>
 
 <pre><code class="r">library(devtools)
 install_github(&quot;smolnos/pulver&quot;)
 </code></pre>
 
-<pre><code>## Skipping install of &#39;pulver&#39; from a github remote, the SHA1 (7c1914f6) has not changed since last install.
+<pre><code>## Skipping install of &#39;pulver&#39; from a github remote, the SHA1 (e29e0f6c) has not changed since last install.
 ##   Use `force = TRUE` to force installation
 </code></pre>
 
@@ -300,14 +295,14 @@ system.time(pulverize(Y, X, Z))
 </code></pre>
 
 <pre><code>##    user  system elapsed 
-##   2.067   0.065   2.131
+##   1.959   0.031   1.989
 </code></pre>
 
 <pre><code class="r">system.time(pulverize(Y, X, Z, cores = 2))
 </code></pre>
 
 <pre><code>##    user  system elapsed 
-##   2.158   0.042   1.272
+##   2.091   0.026   1.199
 </code></pre>
 
 <p><strong>Running function <code>pulverize_all</code></strong></p>

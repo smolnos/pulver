@@ -1,6 +1,6 @@
 Package: pulver
 Title: Parallel Ultra-Rapid p-Value Computation for Linear Regression Interaction Terms
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: person("Sophie", "Molnos", email = "somolnos@gmail.com", role = c("aut", "cre"))
 Maintainer: Sophie Molnos <somolnos@gmail.com>
 Description: Computes p-values for the interaction term in a very large number of linear regression models.

@@ -16,11 +16,6 @@ vignette: >
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-**Release version (CRAN):**
-```{r CRAN}
-# install.packages("pulver")
-```
-
 **Development version (Github)**
 ```{r Github, results = "hide"}
 library(devtools)
