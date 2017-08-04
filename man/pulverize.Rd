@@ -55,7 +55,7 @@ p-value for the interaction term for each model.
 For reasons of computational efficiency, \code{pulverize} returns
 only p-values and only for the interaction term \eqn{xz}.
 Fast run time is achieved by using the correlation coefficient between
-the outcome variable eqn{y} and the interaction term eqn{xz} to test
+the outcome variable \eqn{y} and the interaction term \eqn{xz} to test
 the null-hypothesis, which avoids the costly computation of inversions.
 Additional employed time-saving operations are a rearrangement of the order when iterating through
 the different matrices, and implementing the core algorithm in the fast
@@ -70,7 +70,7 @@ obtained via traditional methods such as R's
 Matrices \code{ymat}, \code{xmat}, and \code{zmat} must
     have column names. Missing values are imputed using their
     column means. If \code{pvalue_threshold} is supplied, only
-    p-values (p < \code{pvalue_threshold})strictly below the
+    p-values (p < \code{pvalue_threshold}) strictly below the
     threshold are included in the returned data frame and saved
     in \code{output_file}.
 
@@ -80,7 +80,7 @@ Matrices \code{ymat}, \code{xmat}, and \code{zmat} must
     \code{suppress_return} to \code{TRUE}.
 
     The column names of the results table are by default set to "y", "x", and
-    "z", but can be changed using the \code{names} argument.
+    "z", but can be changed using the \code{colnames} argument.
 
     An error will be signaled if \code{output_file} already exists.
     Setting \code{overwrite} to \code{TRUE} will silently overwrite the
