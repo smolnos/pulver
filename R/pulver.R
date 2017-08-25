@@ -259,7 +259,7 @@ read_data <- function(file) {
 
 #' Reads a \code{databel} object file in table format and returns a matrix of type "double"
 #'
-#' @param file file name of a \code{databel} object (extension: ".fvi") or text file
+#' @param file file name of a \code{databel} object (no extension, i.e. "example" instead of  "example.fvi")
 #'
 #' @return matrix of type "double"
 #'
@@ -276,7 +276,7 @@ read_databel <- function(file) {
 #' Converts matrix of type "double" to a \code{databel} object file
 #'
 #' @param data matrix of type "double"
-#' @param file file name of a \code{databel} object (extension: ".fvi") or text file
+#' @param file file name of a \code{databel} object or text file
 #'
 #' @references \url{www.genabel.org/packages/DatABEL}
 #'
