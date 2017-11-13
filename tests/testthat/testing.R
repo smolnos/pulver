@@ -1,6 +1,6 @@
-create_matrix <- function(nrow, ncol, column_prefix, column_offset = 0L) {
+create_matrix <- function(nrow, ncol, column_prefix, column_offset = 0L, row_prefix = "row") {
     matrix(stats::rnorm(nrow * ncol), nrow, ncol,
-        dimnames = list(1:nrow, paste0(column_prefix, column_offset + 1:ncol)))
+        dimnames = list(paste0(row_prefix, 1:nrow), paste0(column_prefix, column_offset + 1:ncol)))
 }
 
 create_multiple_xyz_matrices <- function(y = 1, x = 1, z = 1, ycols = 2, xcols = 3, zcols = 4, nobs = 10) {
