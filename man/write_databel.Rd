@@ -9,7 +9,7 @@ write_databel(data, file)
 \arguments{
 \item{data}{matrix of type "double"}
 
-\item{file}{file name of a \code{databel} object (extension: ".fvi") or text file}
+\item{file}{file name of a \code{databel} object or text file}
 }
 \description{
 Converts matrix of type "double" to a \code{databel} object file

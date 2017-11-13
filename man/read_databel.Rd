@@ -7,7 +7,7 @@
 read_databel(file)
 }
 \arguments{
-\item{file}{file name of a \code{databel} object (extension: ".fvi") or text file}
+\item{file}{file name of a \code{databel} object (no extension, i.e. "example" instead of  "example.fvi")}
 }
 \value{
 matrix of type "double"
