@@ -184,10 +184,16 @@ test_that("replace_NA_by_mean", {
 })
 
 context("matrices_have_same_rownames")
-test_that("matrices_have_same_rownames", {
+test_that("matrices_have_rownames", {
     mat <- create_xyz_matrices(ycols = 2, xcols = 3, zcols = 4, nobs = 10)
     rownames(mat$x) <- NULL
-    expect_warning(pulverize(mat$y, mat$x, mat$z), "At least one matrix does not have row names.")
+    expect_warning(pulverize(mat$y, mat$x, mat$z), "Matrix xmat does not have row names.")
+    rownames(mat$z) <- NULL
+    expect_warning(pulverize(mat$y, mat$x, mat$z), "Matrices xmat, zmat do not have row names.")
+})
+
+test_that("matrices_have_same_rownames", {
+    mat <- create_xyz_matrices(ycols = 2, xcols = 3, zcols = 4, nobs = 10)
     rownames(mat$x) <- 2:11
     expect_error(pulverize(mat$y, mat$x, mat$z),
         "Matrices do not have identical row names.")

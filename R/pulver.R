@@ -304,10 +304,15 @@ replace_NA_by_mean <- function(data) {
 }
 
 check_identical_rows <- function(ymat, xmat, zmat) {
-    if (any(is.null(rownames(ymat)), is.null(rownames(xmat)), is.null(rownames(zmat)))) {
-        warning("At least one matrix does not have row names.")
+    nullmatrices <- c(is.null(rownames(ymat)), is.null(rownames(xmat)), is.null(rownames(zmat)))
+    if (any(nullmatrices)) {
+        if (length(which(nullmatrices)) == 1) {
+            warning(paste0("Matrix ", c("ymat", "xmat", "zmat")[nullmatrices], " does not have row names."))
+        } else {
+            warning(paste0("Matrices ", paste(c("ymat", "xmat", "zmat")[nullmatrices], collapse = ", ")," do not have row names."))
+        }
     } else {
-        #if (!all.equal(rownames(a),rownames(b),rownames(c)))
-        #        stop("Matrices do not have identical row names.")
+        if (any(rownames(ymat) != rownames(xmat) | rownames(xmat) != rownames(zmat)))
+            stop("Matrices do not have identical row names.")
     }
 }
