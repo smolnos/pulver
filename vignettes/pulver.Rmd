@@ -15,14 +15,8 @@ vignette: >
 ***Installation***
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-```
-**Development version (Github)**
-```{r Github, results = "hide"}
-library(devtools)
-install_github("smolnos/pulver")
-```
-
-**Function ```pulverize```**
+```*
+*Function ```pulverize```**
 
 ```pulverize``` receives three arguments: the output matrix Y, and two input matrices X and Z. Then, ```pulverize``` iterates through each column y of matrix Y, each column x of matrix X, and each column z of matrix Z in order to evaluate the linear regression:
 \begin{equation}
@@ -81,7 +75,7 @@ The files contain submatrices of the matrices Y, X, and Z. ```pulverize_all``` i
 Thus, first we create lists containing file names of larger matrices Y and X, and one list containing the matrix Z.
 ```{r create_lists}
 nobs <- 100
-Y <- matrix(rnorm(nobs * 20), ncol = 20, dimnames = list(NULL,
+Y <- matrix(rnorm(nobs * 20), ncol = 20, dimnames = list(paste0("row", 1:nobs),
 paste0("column", 1:20)))
 Y1 <- Y[,1:10]
 Y2 <- Y[,11:20]

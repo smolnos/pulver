@@ -95,7 +95,7 @@ pulverize <- function(ymat, xmat, zmat, output_file = NULL,
         stop("File exists already: ", output_file)
     if (any(c(is.null(colnames(ymat)), is.null(colnames(xmat)), is.null(colnames(zmat)))))
         stop("Column names for at least one matrix is missing.")
-    check_identical_rows(ymat, xmat, zmat)
+    check_identical_rownames(ymat, xmat, zmat)
     number_of_individuals <- nrow(xmat)
     if (is.null(pvalue_threshold))
         rvalue_threshold <- Inf
@@ -303,7 +303,7 @@ replace_NA_by_mean <- function(data) {
     data
 }
 
-check_identical_rows <- function(ymat, xmat, zmat) {
+check_identical_rownames <- function(ymat, xmat, zmat) {
     nullmatrices <- c(is.null(rownames(ymat)), is.null(rownames(xmat)), is.null(rownames(zmat)))
     if (any(nullmatrices)) {
         if (length(which(nullmatrices)) == 1) {
